@@ -18,13 +18,10 @@ func main() {
 	switch color {
 	case "red":
 		fmt.Println("Color is red!")
-		break
 	case "green":
 		fmt.Println("Color is green")
-		break
 	case "blue":
 		fmt.Println("Color is blue")
-		break
 	default:
 		fmt.Println("Color is not red, green or blue")
 	}
