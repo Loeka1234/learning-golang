@@ -1,8 +1,8 @@
 package main
 
 import (
-	"first-project/03_packages/strutil"
 	"fmt"
+	"github.com/Loeka1234/learning-golang/03_packages/strutil"
 	"math"
 )
 
