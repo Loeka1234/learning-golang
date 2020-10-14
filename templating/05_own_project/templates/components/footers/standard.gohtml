@@ -1,0 +1,27 @@
+{{define "footer-css"}}
+    <style>
+        footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: {{.Data.BackColor}};
+            color: {{.Data.Color}};
+        }
+
+        footer h2 {
+            margin-bottom: 0;
+        }
+
+        footer p {
+            margin-top: 3px;
+        }
+    </style>
+{{end}}
+
+{{define "footer"}}
+    <footer>
+        <h2>This is my footer!</h2>
+        <p>Copyright © Loeka Lievens 2020</p>
+    </footer>
+{{end}}

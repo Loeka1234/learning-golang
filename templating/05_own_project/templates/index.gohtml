@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    {{template "css"}}
+    {{template "header-css" .Header}}
+    {{template "section-css" .Section}}
+    {{template "footer-css" .Footer}}
+    <title>Template Site</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,400;1,500&display=swap"
+          rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    {{template "header" .Header}}
+    {{template "section" .Section}}
+    {{template "footer" .Footer}}
+</div>
+</body>
+</html>

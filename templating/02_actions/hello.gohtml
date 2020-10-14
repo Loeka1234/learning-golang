@@ -1,0 +1,34 @@
+{{define "footer"}}
+    <footer>
+        <p>Copyright 2020 Loeka Lievens</p>
+        <p>
+            Contact information: <a href="https://www.loeka.me">loeka.me</a>
+        </p>
+    </footer>
+{{end}}
+
+{{define "widget"}}
+    <div class="widget">
+        {{template "widget-header" .Name}}
+        <span class="price">${{.Price}}</span>
+    </div>
+{{end}}
+
+{{define "widget-header"}}
+    <h3 class="name">{{.}}</h3>
+{{end}}
+
+<h1>
+    Hello,
+    {{if .Name}}
+    {{.Name}}
+{{- else}}
+    there
+{{- end}}!
+</h1>
+
+{{range .Widgets}}
+    {{template "widget" .}}
+{{end}}
+
+{{template "footer"}}
