@@ -1,0 +1,1 @@
+Running: `go build && 05_own_project.exe`
