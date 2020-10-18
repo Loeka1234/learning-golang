@@ -13,6 +13,7 @@ func main() {
 	fmt.Println(templating.GetFooters())
 
 	http.HandleFunc("/", handler)
+	http.Handle("/dashboard", http.FileServer(http.Dir("./dashboard/build")))
 	err := http.ListenAndServe(":3000", nil)
 	if err != nil {
 		panic(err)
@@ -24,6 +25,8 @@ type ReturnError struct {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3001")
+
 	// Website
 	if r.URL.Path == "/" {
 		indexHandler(w, r)
@@ -70,7 +73,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	templating.Render(w)
+	wc := getWebconfig()
+	templating.Render(w, wc.Header, wc.Section, wc.Footer)
 }
 
 func sendAsJSON(w http.ResponseWriter, i interface{}, status int) {

@@ -48,7 +48,7 @@ func GetFooters() []string {
 
 // Converts component type + name to full path
 func nameToFolder(componentType string, name string) string {
-	return "templates/components/" + componentType + "/" + name + ".gohtml"
+	return "templates/components/" + componentType + "/" + name
 }
 
 type Data struct {
@@ -77,24 +77,24 @@ type ViewData struct {
 	Footer  Footer
 }
 
-func Render(w http.ResponseWriter) {
+func Render(w http.ResponseWriter, header string, section string, footer string) {
 	vw := ViewData{
 		Header: Header{
-			Path: nameToFolder("headers", "standard"),
+			Path: nameToFolder("headers", header),
 			Data: Data{
 				BackColor: "#2e2e30",
 				Color:     "white",
 			},
 		},
 		Section: Section{
-			Path: nameToFolder("sections", "standard"),
+			Path: nameToFolder("sections", section),
 			Data: Data{
 				BackColor: "white",
 				Color:     "black",
 			},
 		},
 		Footer: Footer{
-			Path: nameToFolder("footers", "standard"),
+			Path: nameToFolder("footers", footer),
 			Data: Data{
 				BackColor: "#2e2e30",
 				Color:     "white",

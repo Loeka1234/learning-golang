@@ -1,0 +1,23 @@
+{{define "header-css"}}
+    <style>
+        header {
+            min-height: 250px;
+            background: {{.Data.BackColor}};
+            color: {{.Data.Color}};
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        header h1 {
+            margin-bottom: 8px;
+        }
+    </style>
+{{end}}
+
+{{define "header"}}
+    <header>
+        <h1>This is another header.</h1>
+    </header>
+{{end}}
