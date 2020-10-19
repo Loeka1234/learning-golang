@@ -15,15 +15,15 @@ func GetComponents(componentType string) []string {
 
 // Get all header filenames
 func GetHeaders() []string {
-	return FilePathsToFileName(GetComponents("headers"))
+	return FilePathsToFileNames(GetComponents("headers"))
 }
 
 // Get all section filenames
 func GetSections() []string {
-	return FilePathsToFileName(GetComponents("sections"))
+	return FilePathsToFileNames(GetComponents("sections"))
 }
 
 // Get all footers filenames
 func GetFooters() []string {
-	return FilePathsToFileName(GetComponents("footers"))
+	return FilePathsToFileNames(GetComponents("footers"))
 }
