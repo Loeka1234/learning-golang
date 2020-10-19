@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { Webconfig } from "./types/webconfig.types";
+import { CompOptions } from "./components/CompOptions";
 
 import "./global.css";
 
@@ -29,20 +31,25 @@ const Header = styled.h1`
 
 const Components = styled.div`
   width: 100%;
+`;
+
+const ComponentWrapper = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-top: 10px;
 `;
 
-const ComponentOption = styled.select`
+const ComponentSelection = styled.select`
   cursor: pointer;
   border: 2px solid white;
   border-radius: 3px;
   color: white;
   background: #3a404a;
   padding: 3px 6px;
-  margin: 10px 0;
+  margin: 10px 0 0 0;
   &:focus {
     outline: none;
   }
@@ -62,20 +69,6 @@ const Wrapper = styled.div`
     border: none;
   }
 `;
-
-interface Component {
-  Selected: string;
-  Options: {
-    Color: string;
-    BackColor: string;
-  };
-}
-
-interface Webconfig {
-  Header: Component;
-  Section: Component;
-  Footer: Component;
-}
 
 const App = () => {
   const [headers, setHeader] = useState<null | string[]>(null);
@@ -107,8 +100,10 @@ const App = () => {
       `/edit?type=${componentType}&comp=${e.target.value}.gohtml`
     );
 
-    console.log(res);
+    reloadIFrame();
+  };
 
+  const reloadIFrame = () => {
     if (iframeRef.current) {
       iframeRef.current.src = "http://localhost:3001";
     }
@@ -119,30 +114,53 @@ const App = () => {
       <Settings>
         <Header>Options</Header>
         <Components>
-          <ComponentOption
-            onChange={e => handleChange(e, "header")}
-            defaultValue={webconfig.Header.Selected.replace(".gohtml", "")}
-          >
-            {headers.map(name => (
-              <option key={name}>{name.replace(".gohtml", "")}</option>
-            ))}
-          </ComponentOption>
-          <ComponentOption
-            onChange={e => handleChange(e, "section")}
-            defaultValue={webconfig.Section.Selected.replace(".gohtml", "")}
-          >
-            {sections.map(name => (
-              <option key={name}>{name.replace(".gohtml", "")}</option>
-            ))}
-          </ComponentOption>
-          <ComponentOption
-            onChange={e => handleChange(e, "footer")}
-            defaultValue={webconfig.Footer.Selected.replace(".gohtml", "")}
-          >
-            {footers.map(name => (
-              <option key={name}>{name.replace(".gohtml", "")}</option>
-            ))}
-          </ComponentOption>
+          <ComponentWrapper>
+            <ComponentSelection
+              onChange={e => handleChange(e, "header")}
+              defaultValue={webconfig.Header.Selected.replace(".gohtml", "")}
+            >
+              {headers.map(name => (
+                <option key={name}>{name.replace(".gohtml", "")}</option>
+              ))}
+            </ComponentSelection>
+            <CompOptions
+              options={webconfig.Header.Options}
+              componentType="header"
+              reloadIFrame={reloadIFrame}
+            />
+          </ComponentWrapper>
+
+          <ComponentWrapper>
+            <ComponentSelection
+              onChange={e => handleChange(e, "section")}
+              defaultValue={webconfig.Section.Selected.replace(".gohtml", "")}
+            >
+              {sections.map(name => (
+                <option key={name}>{name.replace(".gohtml", "")}</option>
+              ))}
+            </ComponentSelection>
+            <CompOptions
+              options={webconfig.Section.Options}
+              componentType="section"
+              reloadIFrame={reloadIFrame}
+            />
+          </ComponentWrapper>
+
+          <ComponentWrapper>
+            <ComponentSelection
+              onChange={e => handleChange(e, "footer")}
+              defaultValue={webconfig.Footer.Selected.replace(".gohtml", "")}
+            >
+              {footers.map(name => (
+                <option key={name}>{name.replace(".gohtml", "")}</option>
+              ))}
+            </ComponentSelection>
+            <CompOptions
+              options={webconfig.Footer.Options}
+              componentType="footer"
+              reloadIFrame={reloadIFrame}
+            />
+          </ComponentWrapper>
         </Components>
       </Settings>
       <Wrapper>

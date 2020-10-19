@@ -64,9 +64,28 @@ func EditWebconfig(componentType string, newValue string) error {
 		}
 		data.Footer.Selected = newValue
 	default:
-		panic(errors.New("component type not found in editWebconfig"))
+		return errors.New("component type not found in editWebconfig")
 	}
 
+	return saveData(data)
+}
+
+func EditOptions(componentType string, newOptions Options) error {
+	data := GetWebconfig()
+	switch componentType {
+	case "header":
+		data.Header.Options = newOptions
+	case "section":
+		data.Section.Options = newOptions
+	case "footer":
+		data.Footer.Options = newOptions
+	default:
+		return errors.New("invalid component type in editOption")
+	}
+	return saveData(data)
+}
+
+func saveData(data JSONData) error {
 	bytes, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -74,4 +93,3 @@ func EditWebconfig(componentType string, newValue string) error {
 	err = ioutil.WriteFile(DataDirectory+WebconfigPath, bytes, 0644)
 	return err
 }
-

@@ -26,7 +26,7 @@ func main() {
 
 	PORT := os.Getenv("PORT")
 	fmt.Println("PORT: ", PORT)
-	err = http.ListenAndServe(":" + PORT, nil)
+	err = http.ListenAndServe(":"+PORT, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -38,6 +38,7 @@ type ReturnError struct {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	// Website
 	if r.URL.Path == "/" {
@@ -76,6 +77,30 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			err := data.EditWebconfig(componentType[0], component[0])
 			if err != nil {
 				sendAsJSON(w, ReturnError{err.Error()}, http.StatusInternalServerError)
+				return
+			}
+
+			w.WriteHeader(http.StatusOK)
+		case "/api/editoptions":
+			componentType, ok := r.URL.Query()["type"] // Getting component type from query string
+			if !ok {
+				sendAsJSON(w, ReturnError{"Query string 'type' incorrect or missing."}, http.StatusBadRequest)
+				return
+			}
+
+			// Get the options from body
+			var options data.Options
+			err := json.NewDecoder(r.Body).Decode(&options)
+			// Checking if the options are valid
+			if err != nil || len(options.BackColor) == 0 || len(options.Color) == 0 {
+				sendAsJSON(w, ReturnError{"Incorrect JSON body."}, http.StatusBadRequest)
+				return
+			}
+
+			// Saving the options
+			err = data.EditOptions(componentType[0], options)
+			if err != nil {
+				sendAsJSON(w, ReturnError{"Oops something went wrong saving your new options."}, http.StatusBadRequest)
 				return
 			}
 
