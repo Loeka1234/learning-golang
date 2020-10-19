@@ -1,1 +1,23 @@
-{"Header":"standard.gohtml","Section":"standard.gohtml","Footer":"standard.gohtml"}
+{
+  "Header": {
+    "selected": "standard.gohtml",
+    "options": {
+      "color": "white",
+      "backColor": "#373638"
+    }
+  },
+  "Section": {
+    "selected": "standard.gohtml",
+    "options": {
+      "color": "black",
+      "backColor": "white"
+    }
+  },
+  "Footer": {
+    "selected": "standard.gohtml",
+    "options": {
+      "color": "white",
+      "backColor": "#373638"
+    }
+  }
+}

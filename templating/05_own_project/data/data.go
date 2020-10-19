@@ -1,16 +1,26 @@
-package main
+package data
 
 import (
 	"encoding/json"
 	"errors"
-	templating "github.com/Loeka1234/learning-golang/templating/05_own_project/templates"
+	"github.com/Loeka1234/learning-golang/templating/05_own_project/utils"
 	"io/ioutil"
 )
 
+type Options struct {
+	Color string
+	BackColor string
+}
+
+type Component struct {
+	Selected string
+	Options Options
+}
+
 type JSONData struct {
-	Header  string
-	Section string
-	Footer  string
+	Header  Component
+	Section Component
+	Footer  Component
 }
 
 const (
@@ -18,7 +28,7 @@ const (
 	WebconfigPath = "/webconfig.json"
 )
 
-func getWebconfig() JSONData {
+func GetWebconfig() JSONData {
 	data, err := ioutil.ReadFile(DataDirectory + WebconfigPath)
 	if err != nil {
 		panic(err)
@@ -34,25 +44,25 @@ func getWebconfig() JSONData {
 	return toReturn
 }
 
-func editWebconfig(componentType string, newValue string) error {
-	data := getWebconfig()
+func EditWebconfig(componentType string, newValue string) error {
+	data := GetWebconfig()
 
 	switch componentType {
 	case "header":
-		if !Contains(templating.GetHeaders(), newValue) {
+		if !utils.Contains(utils.GetHeaders(), newValue) {
 			return errors.New("component does not exists")
 		}
-		data.Header = newValue
+		data.Header.Selected = newValue
 	case "section":
-		if !Contains(templating.GetSections(), newValue) {
+		if !utils.Contains(utils.GetSections(), newValue) {
 			return errors.New("component does not exists")
 		}
-		data.Section = newValue
+		data.Section.Selected = newValue
 	case "footer":
-		if !Contains(templating.GetFooters(), newValue) {
+		if !utils.Contains(utils.GetFooters(), newValue) {
 			return errors.New("component does not exists")
 		}
-		data.Footer = newValue
+		data.Footer.Selected = newValue
 	default:
 		panic(errors.New("component type not found in editWebconfig"))
 	}
@@ -61,6 +71,7 @@ func editWebconfig(componentType string, newValue string) error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(DataDirectory + WebconfigPath, bytes, 0644)
+	err = ioutil.WriteFile(DataDirectory+WebconfigPath, bytes, 0644)
 	return err
 }
+

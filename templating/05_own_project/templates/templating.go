@@ -1,49 +1,16 @@
 package templating
 
 import (
+	"github.com/Loeka1234/learning-golang/templating/05_own_project/data"
 	"html/template"
 	"net/http"
-	"path/filepath"
 )
 
 const TemplatesDir = "templates"
-const ComponentsDir = TemplatesDir + "/components"
-
-// Returns all filenames of a specific foler in components
-func getComponents(componentType string) []string {
-	files, err := filepath.Glob(ComponentsDir + "/" + componentType + "/*.gohtml")
-	if err != nil {
-		panic(err)
-	}
-	return files
-}
 
 // Returns the filepath for index.gohtml and global-css.gohtml
 func getDefaultFiles() []string {
 	return []string{TemplatesDir + "/index.gohtml", TemplatesDir + "/global-css.gohtml"}
-}
-
-// Converts a slice of paths to a slice of filenames
-func filePathsToFileName(filePaths []string) []string {
-	for i, filePath := range filePaths {
-		filePaths[i] = filepath.Base(filePath)
-	}
-	return filePaths
-}
-
-// Get all header filenames
-func GetHeaders() []string {
-	return filePathsToFileName(getComponents("headers"))
-}
-
-// Get all section filenames
-func GetSections() []string {
-	return filePathsToFileName(getComponents("sections"))
-}
-
-// Get all footers filenames
-func GetFooters() []string {
-	return filePathsToFileName(getComponents("footers"))
 }
 
 // Converts component type + name to full path
@@ -77,43 +44,21 @@ type ViewData struct {
 	Footer  Footer
 }
 
-func Render(w http.ResponseWriter, header string, section string, footer string) {
-	vw := ViewData{
-		Header: Header{
-			Path: nameToFolder("headers", header),
-			Data: Data{
-				BackColor: "#2e2e30",
-				Color:     "white",
-			},
-		},
-		Section: Section{
-			Path: nameToFolder("sections", section),
-			Data: Data{
-				BackColor: "white",
-				Color:     "black",
-			},
-		},
-		Footer: Footer{
-			Path: nameToFolder("footers", footer),
-			Data: Data{
-				BackColor: "#2e2e30",
-				Color:     "white",
-			},
-		},
-	}
+func Render(w http.ResponseWriter) {
+	conf := data.GetWebconfig()
 
 	t, err := template.ParseFiles(
 		getDefaultFiles()[0],
 		getDefaultFiles()[1],
-		vw.Header.Path,
-		vw.Section.Path,
-		vw.Footer.Path,
+		nameToFolder("headers", conf.Header.Selected),
+		nameToFolder("sections", conf.Section.Selected),
+		nameToFolder("footers", conf.Footer.Selected),
 	)
 	if err != nil {
 		panic(err)
 	}
 
-	err = t.ExecuteTemplate(w, "index.gohtml", vw)
+	err = t.ExecuteTemplate(w, "index.gohtml", conf)
 	if err != nil {
 		panic(err)
 	}

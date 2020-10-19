@@ -63,20 +63,29 @@ const Wrapper = styled.div`
   }
 `;
 
+interface Webconfig {
+  Header: string;
+  Section: string;
+  Footer: string;
+}
+
 const App = () => {
   const [headers, setHeader] = useState<null | string[]>(null);
   const [sections, setSections] = useState<null | string[]>(null);
   const [footers, setFooters] = useState<null | string[]>(null);
+  const [webconfig, setWebconfig] = useState<null | Webconfig>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     const getAll = async () => {
-      const headers = await axios.get("http://localhost:3000/api/headers");
-      const sections = await axios.get("http://localhost:3000/api/sections");
-      const footers = await axios.get("http://localhost:3000/api/footers");
+      const headers = await axios.get("/headers");
+      const sections = await axios.get("/sections");
+      const footers = await axios.get("/footers");
+      const webconfig = await axios.get("/webconfig");
       setHeader(headers.data);
       setSections(sections.data);
       setFooters(footers.data);
+      setWebconfig(webconfig.data);
     };
 
     getAll();
@@ -87,32 +96,41 @@ const App = () => {
     componentType: string
   ) => {
     const res = await axios.post(
-      `http://localhost:3000/api/edit?type=${componentType}&comp=${e.target.value}.gohtml`
+      `/edit?type=${componentType}&comp=${e.target.value}.gohtml`
     );
 
     console.log(res);
 
     if (iframeRef.current) {
-      iframeRef.current.src = "http://localhost:3000";
+      iframeRef.current.src = "http://localhost:3001";
     }
   };
 
-  return headers && sections && footers ? (
+  return headers && sections && footers && webconfig ? (
     <Main>
       <Settings>
         <Header>Options</Header>
         <Components>
-          <ComponentOption onChange={e => handleChange(e, "header")}>
+          <ComponentOption
+            onChange={e => handleChange(e, "header")}
+            defaultValue={webconfig.Header.replace(".gohtml", "")}
+          >
             {headers.map(name => (
               <option key={name}>{name.replace(".gohtml", "")}</option>
             ))}
           </ComponentOption>
-          <ComponentOption onChange={e => handleChange(e, "section")}>
+          <ComponentOption
+            onChange={e => handleChange(e, "section")}
+            defaultValue={webconfig.Section.replace(".gohtml", "")}
+          >
             {sections.map(name => (
               <option key={name}>{name.replace(".gohtml", "")}</option>
             ))}
           </ComponentOption>
-          <ComponentOption onChange={e => handleChange(e, "footer")}>
+          <ComponentOption
+            onChange={e => handleChange(e, "footer")}
+            defaultValue={webconfig.Footer.replace(".gohtml", "")}
+          >
             {footers.map(name => (
               <option key={name}>{name.replace(".gohtml", "")}</option>
             ))}
@@ -120,7 +138,7 @@ const App = () => {
         </Components>
       </Settings>
       <Wrapper>
-        <iframe src="http://localhost:3000" ref={iframeRef}></iframe>
+        <iframe src="http://localhost:3001" ref={iframeRef}></iframe>
       </Wrapper>
     </Main>
   ) : null;
