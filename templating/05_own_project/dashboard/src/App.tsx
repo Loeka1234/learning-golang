@@ -63,10 +63,18 @@ const Wrapper = styled.div`
   }
 `;
 
+interface Component {
+  Selected: string;
+  Options: {
+    Color: string;
+    BackColor: string;
+  };
+}
+
 interface Webconfig {
-  Header: string;
-  Section: string;
-  Footer: string;
+  Header: Component;
+  Section: Component;
+  Footer: Component;
 }
 
 const App = () => {
@@ -113,7 +121,7 @@ const App = () => {
         <Components>
           <ComponentOption
             onChange={e => handleChange(e, "header")}
-            defaultValue={webconfig.Header.replace(".gohtml", "")}
+            defaultValue={webconfig.Header.Selected.replace(".gohtml", "")}
           >
             {headers.map(name => (
               <option key={name}>{name.replace(".gohtml", "")}</option>
@@ -121,7 +129,7 @@ const App = () => {
           </ComponentOption>
           <ComponentOption
             onChange={e => handleChange(e, "section")}
-            defaultValue={webconfig.Section.replace(".gohtml", "")}
+            defaultValue={webconfig.Section.Selected.replace(".gohtml", "")}
           >
             {sections.map(name => (
               <option key={name}>{name.replace(".gohtml", "")}</option>
@@ -129,7 +137,7 @@ const App = () => {
           </ComponentOption>
           <ComponentOption
             onChange={e => handleChange(e, "footer")}
-            defaultValue={webconfig.Footer.replace(".gohtml", "")}
+            defaultValue={webconfig.Footer.Selected.replace(".gohtml", "")}
           >
             {footers.map(name => (
               <option key={name}>{name.replace(".gohtml", "")}</option>
