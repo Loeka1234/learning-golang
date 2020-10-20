@@ -10,3 +10,4 @@ func numbers() (x, y int) {
     y = 1
     return
 }
+```
