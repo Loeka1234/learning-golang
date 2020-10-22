@@ -1,6 +1,23 @@
 GET http://localhost:9090
 
-Loeka
+###
+POST http://localhost:9090
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "tea",
+  "description": "a nice cup of tea"
+}
+
+###
+PUT http://localhost:9090/2
+Content-Type: application/json
+
+{
+  "name": "tea",
+  "description": "a nice cup of tea"
+}
 
 ###
 GET http://localhost:9090/goodbye
