@@ -8,19 +8,19 @@ import (
 )
 
 type Options struct {
-	Color string
-	BackColor string
+	Color     string `json:"color"`
+	BackColor string `json:"backColor"`
 }
 
 type Component struct {
-	Selected string
-	Options Options
+	Selected string  `json:"selected"`
+	Options  Options `json:"options"`
 }
 
 type JSONData struct {
-	Header  Component
-	Section Component
-	Footer  Component
+	Header  Component `json:"header"`
+	Section Component `json:"section"`
+	Footer  Component `json:"footer"`
 }
 
 const (

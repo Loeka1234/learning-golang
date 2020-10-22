@@ -91,6 +91,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			// Get the options from body
 			var options data.Options
 			err := json.NewDecoder(r.Body).Decode(&options)
+			fmt.Println(options)
 			// Checking if the options are valid
 			if err != nil || len(options.BackColor) == 0 || len(options.Color) == 0 {
 				sendAsJSON(w, ReturnError{"Incorrect JSON body."}, http.StatusBadRequest)
