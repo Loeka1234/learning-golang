@@ -96,7 +96,7 @@ const App = () => {
     e: React.ChangeEvent<HTMLSelectElement>,
     componentType: string
   ) => {
-    const res = await axios.post(
+    await axios.post(
       `/edit?type=${componentType}&comp=${e.target.value}.gohtml`
     );
 
@@ -117,14 +117,14 @@ const App = () => {
           <ComponentWrapper>
             <ComponentSelection
               onChange={e => handleChange(e, "header")}
-              defaultValue={webconfig.Header.Selected.replace(".gohtml", "")}
+              defaultValue={webconfig.header.selected.replace(".gohtml", "")}
             >
               {headers.map(name => (
                 <option key={name}>{name.replace(".gohtml", "")}</option>
               ))}
             </ComponentSelection>
             <CompOptions
-              options={webconfig.Header.Options}
+              options={webconfig.header.options}
               componentType="header"
               reloadIFrame={reloadIFrame}
             />
@@ -133,14 +133,14 @@ const App = () => {
           <ComponentWrapper>
             <ComponentSelection
               onChange={e => handleChange(e, "section")}
-              defaultValue={webconfig.Section.Selected.replace(".gohtml", "")}
+              defaultValue={webconfig.section.selected.replace(".gohtml", "")}
             >
               {sections.map(name => (
                 <option key={name}>{name.replace(".gohtml", "")}</option>
               ))}
             </ComponentSelection>
             <CompOptions
-              options={webconfig.Section.Options}
+              options={webconfig.section.options}
               componentType="section"
               reloadIFrame={reloadIFrame}
             />
@@ -149,14 +149,14 @@ const App = () => {
           <ComponentWrapper>
             <ComponentSelection
               onChange={e => handleChange(e, "footer")}
-              defaultValue={webconfig.Footer.Selected.replace(".gohtml", "")}
+              defaultValue={webconfig.footer.selected.replace(".gohtml", "")}
             >
               {footers.map(name => (
                 <option key={name}>{name.replace(".gohtml", "")}</option>
               ))}
             </ComponentSelection>
             <CompOptions
-              options={webconfig.Footer.Options}
+              options={webconfig.footer.options}
               componentType="footer"
               reloadIFrame={reloadIFrame}
             />
@@ -164,7 +164,11 @@ const App = () => {
         </Components>
       </Settings>
       <Wrapper>
-        <iframe src="http://localhost:3001" ref={iframeRef}></iframe>
+        <iframe
+          src="http://localhost:3001"
+          ref={iframeRef}
+          title="Web page"
+        ></iframe>
       </Wrapper>
     </Main>
   ) : null;

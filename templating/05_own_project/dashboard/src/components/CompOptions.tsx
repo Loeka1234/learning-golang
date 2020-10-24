@@ -71,13 +71,13 @@ export const CompOptions: React.FC<CompOptionsProps> = ({
         <Label htmlFor="backColor">Background Color: </Label>
         <ColorInput
           type="color"
-          defaultValue={options.BackColor}
+          defaultValue={options.backColor}
           id="backColor"
-          color={optionsInState.BackColor}
+          color={optionsInState.backColor}
           onChange={e =>
             setOptionsInState({
               ...options,
-              BackColor: e.target.value,
+              backColor: e.target.value,
             })
           }
         />
@@ -86,12 +86,12 @@ export const CompOptions: React.FC<CompOptionsProps> = ({
         <Label htmlFor="color">Color: </Label>
         <ColorInput
           type="color"
-          defaultValue={options.Color}
-          color={optionsInState.Color}
+          defaultValue={options.color}
+          color={optionsInState.color}
           onChange={e =>
             setOptionsInState({
               ...options,
-              Color: e.target.value,
+              color: e.target.value,
             })
           }
         />
