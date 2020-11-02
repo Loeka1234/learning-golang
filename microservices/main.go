@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"github.com/Loeka1234/learning-golang/microservices/handlers"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
@@ -13,15 +14,21 @@ import (
 func main() {
 	l := log.New(os.Stdout, "product-api ", log.LstdFlags)
 
+	// Creating handles
 	ph := handlers.NewProducts(l)
 
-	//hh := handlers.NewHello(l)
-	gh := handlers.NewGoodbye(l)
+	sm := mux.NewRouter()
 
-	sm := http.NewServeMux()
+	getRouter := sm.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc("/", ph.GetProducts)
 
-	sm.Handle("/", ph)
-	sm.Handle("/goodbye", gh)
+	putRouter := sm.Methods(http.MethodPut).Subrouter()
+	putRouter.HandleFunc("/{id:[0-9]+}", ph.UpdateProducts)
+	putRouter.Use(ph.MiddlewareProductValidation)
+
+	postRouter := sm.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/", ph.AddProduct)
+	postRouter.Use(ph.MiddlewareProductValidation)
 
 	s := &http.Server{
 		Addr:         ":9090",
